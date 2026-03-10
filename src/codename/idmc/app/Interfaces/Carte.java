@@ -4,22 +4,49 @@
  */
 package codename.idmc.app.Interfaces;
 
-/**
- *
- * @author guill
- */
 public class Carte {
+
     private int idCarte;
     private String contenu;
-    private String type; // Remplace l'énumération (ex: "Rouge", "Bleu", "Neutre", "Assassin")
+    private CouleurCarte type;
+    private boolean retournee;
 
-    // --- Getters et Setters ---
-    public int setIdCart(){}; //i d aleatoire unique de 1 a 25
+    public Carte(int idCarte, String contenu, CouleurCarte type) {
+        this.idCarte = idCarte;
+        this.contenu = contenu;
+        this.type = type;
+        this.retournee = false;
+    }
 
-    public String getContenu() { return contenu; }
-    public void setContenu(String contenu) { this.contenu = contenu; }
+    public int getIdCarte() {
+        return idCarte;
+    }
 
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
+    public void setIdCarte(int idCarte) {
+        this.idCarte = idCarte;
+    }
 
+    public String getContenu() {
+        return contenu;
+    }
+
+    public void setContenu(String contenu) {
+        this.contenu = contenu;
+    }
+
+    public CouleurCarte getType() {
+        return type;
+    }
+
+    public void setType(CouleurCarte type) {
+        this.type = type;
+    }
+
+    public boolean isRetournee() {
+        return retournee;
+    }
+
+    public void retourner() {
+        this.retournee = true;
+    }
 }

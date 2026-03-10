@@ -1,17 +1,19 @@
-package codename.idmc.infrastructure.network.dto;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class CardDto {
 
-    public String name;
+    @JsonProperty("name")
+    private String name;
 
     @JsonProperty("diff_id")
-    public int diffId;
+    private int diffId;
 
     @JsonProperty("category_id")
-    public int categoryId;
+    private int categoryId;
 
     @JsonProperty("establishment_id")
-    public int establishmentId;
+    private int establishmentId;
+
+    public String getName() { return name; }
+    public int getDiffId() { return diffId; }
+    public int getCategoryId() { return categoryId; }
+    public int getEstablishmentId() { return establishmentId; }
 }
