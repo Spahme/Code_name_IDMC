@@ -4,8 +4,6 @@
  */
 package codename.idmc.app.Interfaces;
 
-import codename.idmc.app.Grille;
-
 /**
  *
  * @author guill
