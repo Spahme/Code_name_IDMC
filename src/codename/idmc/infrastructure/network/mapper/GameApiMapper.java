@@ -10,8 +10,8 @@ public class GameApiMapper {
 
         return new Carte(
                 id,                 // id local 1..25
-                dto.name,           // mot récupéré depuis l'API
-                CouleurCarte.NEUTRE // couleur temporaire
+                dto.getName(),           // mot récupéré depuis l'API
+                CouleurCarte.NEUTRAL // couleur temporaire
         );
     }
 }

@@ -1,3 +1,6 @@
+package codename.idmc.infrastructure.network.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 public class CardDto {
 
     @JsonProperty("name")
