@@ -4,9 +4,14 @@
  */
 package codename.idmc.app.Interfaces;
 
+import codename.idmc.infrastructure.persistance.Saveable;
+
 public class Joueur {
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private String nom;
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private String equipe;
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private boolean admin;
 
     // --- Getters et Setters ---

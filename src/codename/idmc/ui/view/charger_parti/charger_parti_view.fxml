@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="codename.idmc.ui.view.charger_parti.ChargerPartiController">
    <top>
       <BorderPane prefHeight="71.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <left>
@@ -28,14 +27,14 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <TextField promptText="recherche" BorderPane.alignment="CENTER">
+            <TextField fx:id="searchField" promptText="recherche" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="350.0" />
                </BorderPane.margin>
             </TextField>
          </top>
          <center>
-            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
                 <TableColumn fx:id="colnom" prefWidth="131.0" text="nom de partie" />
                 <TableColumn fx:id="coldate" minWidth="8.0" prefWidth="91.0" text="date" />

@@ -4,17 +4,24 @@
  */
 package codename.idmc.app.Interfaces;
 
+import codename.idmc.infrastructure.persistance.Saveable;
+
 /**
  *
  * @author guill
  */
 public class Partie {
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private int nbJoueur;
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private int tourActuelle;
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private int scoreRouge;
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private int scoreBleu;
-    
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private Grille grille;
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private GrilleCarteCle grilleME;
 
     // --- Getters et Setters ---

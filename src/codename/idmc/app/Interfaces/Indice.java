@@ -4,12 +4,16 @@
  */
 package codename.idmc.app.Interfaces;
 
+import codename.idmc.infrastructure.persistance.Saveable;
+
 /**
  *
  * @author guill
  */
 public class Indice {
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private String mot;
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private int nbMot; 
 
     // --- Getters et Setters ---

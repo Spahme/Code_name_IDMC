@@ -4,11 +4,16 @@
  */
 package codename.idmc.app.Interfaces;
 
-public class Carte {
+import codename.idmc.infrastructure.persistance.Saveable;// systhème de sauvegarde
 
+public class Carte {
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private int idCarte;
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private String contenu;
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private CouleurCarte type;
+    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private boolean retournee;
 
     public Carte(int idCarte, String contenu, CouleurCarte type) {
