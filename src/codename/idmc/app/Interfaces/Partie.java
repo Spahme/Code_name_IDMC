@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package codename.idmc.app;
+package codename.idmc.app.Interfaces;
 
 import codename.idmc.app.Interfaces.Plateau;
-import codename.idmc.app.Joueur;
+import codename.idmc.app.Interfaces.Joueur;
 import java.util.ArrayList;
 import java.util.List;
 
