@@ -1,35 +1,71 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package codename.idmc.app.Interfaces;
 
 import codename.idmc.infrastructure.persistance.Saveable;
 
 public class Joueur {
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
+
+    @Saveable
     private String nom;
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
-    private String equipe;
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
+
+    private Equipe equipe;
+
+    @Saveable
     private boolean admin;
 
-    // --- Getters et Setters ---
-    public String getNom() { return nom; }
-    public void setNom(String nom) { this.nom = nom; }
+    private boolean estMaitreEspion;
 
-    public String getEquipe() { return equipe; }
-    public void setEquipe(String equipe) { this.equipe = equipe; }
+    // Constructeur
+    public Joueur(String nom) {
+        this.nom = nom;
+    }
 
-    public boolean isAdmin() { return admin; }
-    public void setAdmin(boolean admin) { this.admin = admin; }
+    // Getters / Setters
+    public String getNom() {
+        return nom;
+    }
 
-    // --- Méthodes ---
-    public void stopPartie(boolean admin) { }
-    public void sauvegarder(boolean admin) { }
-    public void kickUnJoueur(boolean admin) { }
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Equipe getEquipe() {
+        return equipe;
+    }
+
+    public void setEquipe(Equipe equipe) {
+        this.equipe = equipe;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public boolean isEstMaitreEspion() {
+        return estMaitreEspion;
+    }
+
+    public void setEstMaitreEspion(boolean estMaitreEspion) {
+        this.estMaitreEspion = estMaitreEspion;
+    }
 
     public String getPseudo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return nom;
+    }
+
+    // Méthodes
+    public void stopPartie() {
+        if (!admin) return;
+    }
+
+    public void sauvegarder() {
+        if (!admin) return;
+    }
+
+    public void kickUnJoueur() {
+        if (!admin) return;
     }
 }
