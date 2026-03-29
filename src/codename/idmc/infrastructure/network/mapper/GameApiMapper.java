@@ -7,11 +7,10 @@ import codename.idmc.infrastructure.network.dto.CardDto;
 public class GameApiMapper {
 
     public Carte toDomain(CardDto dto, int id) {
-
         return new Carte(
-                id,                 // id local 1..25
-                dto.getName(),           // mot récupéré depuis l'API
-                CouleurCarte.NEUTRAL // couleur temporaire
+                id,
+                dto.getName(),
+                CouleurCarte.NEUTRE
         );
     }
 }

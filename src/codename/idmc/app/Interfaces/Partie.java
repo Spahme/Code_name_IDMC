@@ -1,15 +1,18 @@
-package codename.idmc.app;
+package codename.idmc.app.Interfaces;
 
+import codename.idmc.app.Interfaces.Carte;
+import codename.idmc.app.Interfaces.CouleurCarte;
+import codename.idmc.app.Interfaces.CouleurEquipe;
 import codename.idmc.app.Interfaces.Equipe;
 import codename.idmc.app.Interfaces.Joueur;
 import codename.idmc.app.Interfaces.Plateau;
 import codename.idmc.infrastructure.persistance.Saveable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Partie {
 
-    // --- Données de jeu ---
     @Saveable
     private int nbJoueur;
 
@@ -37,7 +40,6 @@ public class Partie {
     @Saveable
     private long tempsDeJeuEnSecondes;
 
-    // --- Logique métier ---
     private Equipe equipeRouge;
     private Equipe equipeBleu;
     private final List<Joueur> joueurs;
@@ -80,8 +82,17 @@ public class Partie {
     }
 
     public void initialiserPlateau(List<Carte> cartesDisponibles) {
-        this.plateau = new Plateau(CouleurEquipe.ROUGE);
-        plateau.initialiser(cartesDisponibles);
+        initialiserPlateau(cartesDisponibles, CouleurEquipe.ROUGE);
+    }
+
+    public void initialiserPlateau(List<Carte> cartesDisponibles, CouleurEquipe equipeCommencante) {
+        this.plateau = new Plateau(equipeCommencante);
+        this.plateau.initialiser(cartesDisponibles);
+
+        if (this.plateau.getGrille() != null) {
+            this.grille = this.plateau.getGrille();
+        }
+
         System.out.println("Plateau initialisé avec " + cartesDisponibles.size() + " cartes.");
     }
 

@@ -1,34 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package codename.idmc.app.Interfaces;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Représente le plateau de jeu Codenames. Utilise Grille pour la structure 2D
- * et ajoute la logique de jeu : distribution des cartes, vérification des
- * conditions de victoire.
- */
 public class Plateau {
 
     private final Grille grille;
-    private final CouleurEquipe equipeCommencante; // team that starts gets 9 cards
+    private final CouleurEquipe equipeCommencante;
 
-    // Constructeur
     public Plateau(CouleurEquipe equipeCommencante) {
         this.equipeCommencante = equipeCommencante;
         this.grille = new Grille();
     }
 
-    // initialisaition
-    /**
-     * Initialise et mélange les cartes sur le plateau. Distribue les types
-     * @param cartesDisponibles
-     */
     public void initialiser(List<Carte> cartesDisponibles) {
         if (cartesDisponibles.size() < Grille.SIZE) {
             throw new IllegalArgumentException(
@@ -37,19 +22,19 @@ public class Plateau {
             );
         }
 
-        // 25 cartes
         List<Carte> cartes = new ArrayList<>(cartesDisponibles);
         Collections.shuffle(cartes);
         cartes = cartes.subList(0, Grille.SIZE);
 
-        // 2. Build the list of types to assign
         List<CouleurCarte> types = new ArrayList<>();
 
-        // Starting team gets 9, other gets 8
         CouleurCarte typeCommencant = equipeCommencante == CouleurEquipe.ROUGE
-                ? CouleurCarte.ROUGE : CouleurCarte.BLEU;
+                ? CouleurCarte.ROUGE
+                : CouleurCarte.BLEU;
+
         CouleurCarte typeAutre = equipeCommencante == CouleurEquipe.ROUGE
-                ? CouleurCarte.BLEU : CouleurCarte.ROUGE;
+                ? CouleurCarte.BLEU
+                : CouleurCarte.ROUGE;
 
         for (int i = 0; i < Grille.REDCARTESCOUNT; i++) {
             types.add(typeCommencant);
@@ -64,13 +49,12 @@ public class Plateau {
             types.add(CouleurCarte.ASSASSIN);
         }
 
-        // Melange des cartes via shuffle
         Collections.shuffle(types);
+
         for (int i = 0; i < Grille.SIZE; i++) {
             cartes.get(i).setType(types.get(i));
         }
 
-        // placer les cartes
         int index = 0;
         for (int r = 0; r < Grille.ROWS; r++) {
             for (int c = 0; c < Grille.COLS; c++) {
@@ -79,11 +63,6 @@ public class Plateau {
         }
     }
 
-    // EN JEU 
-    /**
-     * Révèle une carte par son contenu et retourne son type. Retourne null si
-     * la carte n'existe pas.
-     */
     public CouleurCarte jouerCarte(String contenu) {
         Carte carte = grille.findByWord(contenu);
         if (carte == null) {
@@ -98,21 +77,14 @@ public class Plateau {
         return carte.getType();
     }
 
-    // Condition de vctoire
-    /**
-     * Vérifie si une équipe a gagné (plus aucune carte restante).
-     * @param equipe
-     * @return 
-     */
     public boolean aGagne(CouleurEquipe equipe) {
         CouleurCarte type = equipe == CouleurEquipe.ROUGE
-                ? CouleurCarte.ROUGE : CouleurCarte.BLEU;
+                ? CouleurCarte.ROUGE
+                : CouleurCarte.BLEU;
+
         return grille.countRemaining(type) == 0;
     }
 
-    /**
-     * Vérifie si la carte assassin a été retournée.
-     */
     public boolean assassinRetourne() {
         for (Carte c : grille.getAllCards()) {
             if (c.getType() == CouleurCarte.ASSASSIN && c.isRetournee()) {
@@ -122,7 +94,6 @@ public class Plateau {
         return false;
     }
 
-    // ── Getters ───────────────────────────────────────────────────────────────
     public Grille getGrille() {
         return grille;
     }
@@ -131,19 +102,14 @@ public class Plateau {
         return equipeCommencante;
     }
 
-    /**
-     * Retourne les cartes restantes d'un type donné.
-     */
     public int getCartesRestantes(CouleurCarte type) {
         return grille.countRemaining(type);
     }
 
-    // ── Affichage ─────────────────────────────────────────────────────────────
-    /**
-     * Affiche le plateau.
-     *
-     * @param vueMaitreEspion si true, affiche les types cachés
-     */
+    public Carte getCartePosition(int ligne, int colonne) {
+        return grille.getCard(ligne, colonne);
+    }
+
     public void afficher(boolean vueMaitreEspion) {
         System.out.println("\n=== PLATEAU ===");
         for (int r = 0; r < Grille.ROWS; r++) {

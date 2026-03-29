@@ -1,22 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package codename.idmc.app.Interfaces;
 
-import codename.idmc.infrastructure.persistance.Saveable;// systhème de sauvegarde
+import codename.idmc.infrastructure.persistance.Saveable;
 
 public class Carte {
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
+
+    @Saveable
     private int idCarte;
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
+
+    @Saveable
     private String contenu;
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
+
+    @Saveable
     private CouleurCarte type;
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
+
+    @Saveable
     private boolean retournee;
-
-
 
     public Carte(int idCarte, String contenu, CouleurCarte type) {
         this.idCarte = idCarte;
@@ -57,9 +55,30 @@ public class Carte {
         this.retournee = true;
     }
 
-    static class CouleurCarte {
+    public void setRetournee(boolean retournee) {
+        this.retournee = retournee;
+    }
 
-        public CouleurCarte() {
-        }
+    public String getCouleurHex() {
+    if (type == null) {
+        return "#FFFFFF";
+    }
+
+    return switch (type) {
+        case ROUGE -> "#E53935";
+        case BLEU -> "#1E88E5";
+        case NEUTRE -> "#D6D6D6";
+        case ASSASSIN -> "#212121";
+    };
+}
+
+    @Override
+    public String toString() {
+        return "Carte{" +
+                "idCarte=" + idCarte +
+                ", contenu='" + contenu + '\'' +
+                ", type=" + type +
+                ", retournee=" + retournee +
+                '}';
     }
 }

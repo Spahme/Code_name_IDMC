@@ -9,6 +9,6 @@ package codename.idmc.app.Interfaces;
  * @author User
  */
 public enum CouleurEquipe {
-            ROUGE, // equipe rouge
-            BLEU,       // belongs to Blue team
-        }
+    ROUGE,
+    BLEU
+}
