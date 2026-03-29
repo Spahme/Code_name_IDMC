@@ -3,24 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/app/Interfaces/MainApp.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/app/Interfaces/Grille.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/app/Interfaces/GrilleCarteCle.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/app/Interfaces/Carte.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/app/Interfaces/MaitreEspion.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/app/Interfaces/Agent.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/app/Interfaces/Plateau.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/app/Interfaces/PlateauMaitreEspion.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/ui/view/lobby/NewFXMain.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/infrastructure/network/ApiEndPoint.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/infrastructure/network/PhpGameApiClient.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/infrastructure/network/JsonCodec.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/test/codename/idmc/infrastructure/network/PhpGameApiClientTest.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/infrastructure/network/dto/CardDto.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/infrastructure/network/dto/ApiResponseDto.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/infrastructure/network/mapper/GameApiMapper.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/src/codename/idmc/app/Interfaces/CouleurCarte.java</file>
-            <file>file:/Users/dazasasha/Desktop/JAVA/Code_name_IDMC/test/codename/idmc/app/Interface/TestGrilleCartes.java</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/nbproject/private/private.xml</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/nbproject/private/private.properties</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/.gitignore</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/src/codename/idmc/app/Interfaces/Carte.java</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/src/codename/idmc/infrastructure/network/dto/CardDto.java</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/src/codename/idmc/app/Interfaces/CouleurCarte.java</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/src/codename/idmc/infrastructure/network/mapper/GameApiMapper.java</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/src/codename/idmc/app/Interfaces/Partie.java</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/src/codename/idmc/app/Interfaces/Joueur.java</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/src/codename/idmc/app/Interfaces/Indice.java</file>
+            <file>file:/C:/Users/guill/Desktop/MIASH%20L3/S6/Interdiciplinaire/Projet_Code_name_IDMC/Code_name_IDMC/src/codename/idmc/ui/view/sauvegarder_parti/SauvegarderPartiController.java</file>
         </group>
     </open-files>
 </project-private>
