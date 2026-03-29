@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package codename.idmc.app.Interfaces;
+package codename.idmc.app;
 
 public class Joueur {
     private String nom;
@@ -23,4 +23,8 @@ public class Joueur {
     public void stopPartie(boolean admin) { }
     public void sauvegarder(boolean admin) { }
     public void kickUnJoueur(boolean admin) { }
+
+    public String getPseudo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

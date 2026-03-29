@@ -11,6 +11,8 @@ public class Carte {
     private CouleurCarte type;
     private boolean retournee;
 
+
+
     public Carte(int idCarte, String contenu, CouleurCarte type) {
         this.idCarte = idCarte;
         this.contenu = contenu;
@@ -48,5 +50,11 @@ public class Carte {
 
     public void retourner() {
         this.retournee = true;
+    }
+
+    static class CouleurCarte {
+
+        public CouleurCarte() {
+        }
     }
 }
