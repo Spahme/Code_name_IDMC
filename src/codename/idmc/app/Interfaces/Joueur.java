@@ -28,4 +28,8 @@ public class Joueur {
     public void stopPartie(boolean admin) { }
     public void sauvegarder(boolean admin) { }
     public void kickUnJoueur(boolean admin) { }
+
+    public String getPseudo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

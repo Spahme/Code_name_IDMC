@@ -16,6 +16,8 @@ public class Carte {
     @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private boolean retournee;
 
+
+
     public Carte(int idCarte, String contenu, CouleurCarte type) {
         this.idCarte = idCarte;
         this.contenu = contenu;
@@ -53,5 +55,11 @@ public class Carte {
 
     public void retourner() {
         this.retournee = true;
+    }
+
+    static class CouleurCarte {
+
+        public CouleurCarte() {
+        }
     }
 }
