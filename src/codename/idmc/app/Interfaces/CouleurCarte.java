@@ -10,8 +10,8 @@ package codename.idmc.app.Interfaces;
  */
     
 public enum CouleurCarte {
-    RED,        // equipe rouge
-    BLUE,       // belongs to Blue team
-    NEUTRAL,    // innocent bystander
-    ASSASSIN    // instant-loss card
+    RED,        // 8 cartes
+    BLUE,       // 9 cartes
+    NEUTRAL,    // 7 cartes 
+    ASSASSIN    // 1 carte
 }

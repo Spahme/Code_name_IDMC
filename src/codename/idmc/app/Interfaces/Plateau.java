@@ -3,7 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package codename.idmc.app.Interfaces;
+import codename.idmc.app.Grille;
+import java.util.Scanner;
 
+/**
+ *
+ * @author guill
+ */
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +33,6 @@ public class Plateau {
     // initialisaition
     /**
      * Initialise et mélange les cartes sur le plateau. Distribue les types
-     * @param cartesDisponibles
      */
     public void initialiser(List<Carte> cartesDisponibles) {
         if (cartesDisponibles.size() < Grille.SIZE) {
@@ -101,8 +106,6 @@ public class Plateau {
     // Condition de vctoire
     /**
      * Vérifie si une équipe a gagné (plus aucune carte restante).
-     * @param equipe
-     * @return 
      */
     public boolean aGagne(CouleurEquipe equipe) {
         CouleurCarte type = equipe == CouleurEquipe.ROUGE
@@ -137,7 +140,25 @@ public class Plateau {
     public int getCartesRestantes(CouleurCarte type) {
         return grille.countRemaining(type);
     }
+    //indice 
+    /**
+ 
+Le maître espion saisit son indice au clavier.*/
+public void saisirIndice() {
+    // only spymaster can give a clue
+    Scanner scanner = new Scanner(System.in);
 
+    System.out.println("\n[" + equipeCourante.getNom() + "] - Maître Espion, entrez votre indice :");
+    System.out.print("Mot : ");
+    String mot = scanner.nextLine().trim();
+
+    System.out.print("Nombre : ");
+    int nombre = scanner.nextInt();
+    scanner.nextLine(); // clear buffer
+
+    indiceCourant = new Indice(mot, nombre, equipeCourante);
+    System.out.println("Indice donné : " + indiceCourant);
+}
     // ── Affichage ─────────────────────────────────────────────────────────────
     /**
      * Affiche le plateau.

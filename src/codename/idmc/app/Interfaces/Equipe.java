@@ -4,7 +4,6 @@
  */
 package codename.idmc.app.Interfaces;
 
-import codename.idmc.app.Interfaces.CouleurEquipe;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,19 +18,19 @@ import java.util.List;
 public class Equipe {
 
     private String nom;
-    private CouleurEquipe couleur;
+    private CouleurEquipe couleur;  //en realité type de la carte si qlq'un peut changer le nom des variables
     private int cartesRestantes;
     private List<Joueur> joueurs;
 
-    // Constructeur
+    // Constructor
     public Equipe(String nom, CouleurEquipe couleur, int cartesRestantes) {
         this.nom = nom;
         this.couleur = couleur;
         this.cartesRestantes = cartesRestantes;
         this.joueurs = new ArrayList<>();
     }
-
     // Getters & Setters
+
     public String getNom() {
         return nom;
     }
@@ -68,6 +67,38 @@ public class Equipe {
     public void ajouterJoueur(Joueur joueur) {
         joueur.setEquipe(this);
         joueurs.add(joueur);
+    }
+    
+      /**
+     * Retourne le Maître Espion de l'équipe, ou null si non assigné.
+     */
+    public Joueur getMaitreEspion() {
+        for (Joueur j : joueurs)
+            if (j.isEstMaitreEspion())
+                return j;
+        return null;
+    }
+        /**
+     * Un joueur réclame le rôle de Maître Espion.
+     * Premier arrivé, premier servi — un seul par équipe.
+     */
+    public boolean reclamerMaitreEspion(Joueur joueur) {
+        // check if role already taken
+        if (getMaitreEspion() != null) {
+            System.out.println("Le rôle de Maître Espion est déjà pris par " +
+                               getMaitreEspion().getPseudo());
+            return false;
+        }
+        // check if player belongs to this team
+        if (!joueurs.contains(joueur)) {
+            System.out.println("Erreur : " + joueur.getPseudo() +
+                               " n'appartient pas à " + nom);
+            return false;
+        }
+        joueur.setEstMaitreEspion(true);
+        System.out.println(joueur.getPseudo() +
+                           " est maintenant Maître Espion de " + nom);
+        return true;
     }
 
     // Décrémente le nombre de cartes restantes
