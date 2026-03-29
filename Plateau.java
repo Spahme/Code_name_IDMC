@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package codename.idmc.app.Interfaces;
+import codename.idmc.app.Grille;
+import java.util.Scanner;
 
 /**
  *
@@ -138,7 +140,25 @@ public class Plateau {
     public int getCartesRestantes(CouleurCarte type) {
         return grille.countRemaining(type);
     }
+    //indice 
+    /**
+ 
+Le maître espion saisit son indice au clavier.*/
+public void saisirIndice() {
+    // only spymaster can give a clue
+    Scanner scanner = new Scanner(System.in);
 
+    System.out.println("\n[" + equipeCourante.getNom() + "] - Maître Espion, entrez votre indice :");
+    System.out.print("Mot : ");
+    String mot = scanner.nextLine().trim();
+
+    System.out.print("Nombre : ");
+    int nombre = scanner.nextInt();
+    scanner.nextLine(); // clear buffer
+
+    indiceCourant = new Indice(mot, nombre, equipeCourante);
+    System.out.println("Indice donné : " + indiceCourant);
+}
     // ── Affichage ─────────────────────────────────────────────────────────────
     /**
      * Affiche le plateau.

@@ -75,6 +75,15 @@ public class Joueur {
 
     public void kickUnJoueur(boolean admin) {
     }
+    //INdice 
+    public boolean peutDonnerIndice() {
+    return estMaitreEspion;
+}
+
+public boolean peutDeviner() {
+    return !estMaitreEspion;
+} 
+
      @Override
     public String toString() {
         String role = estMaitreEspion ? "Maître Espion" : "Opératif";
