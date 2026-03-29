@@ -1,23 +1,28 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package codename.idmc.app.Interfaces;
 
-import codename.idmc.infrastructure.persistance.Saveable;
-
+/**
+ *
+ * @author guill
+ */
 public class Indice {
 
-    @Saveable
     private String mot;
-
-    @Saveable
     private int nbMot;
-
+   //Ajout de la classe equipe 
     private Equipe equipe;
 
-    public Indice(String mot, int nbMot, Equipe equipe) {
+    // Constructor
+    public Indice(String mot, int nbmot, Equipe equipe) {
         this.mot = mot;
-        this.nbMot = nbMot;
+        this.nbMot = nbmot;
         this.equipe = equipe;
     }
 
+    // Getters & Setters
     public String getMot() {
         return mot;
     }
@@ -42,6 +47,7 @@ public class Indice {
         this.equipe = equipe;
     }
 
+    // Max guesses = number + 1 bonus guess (0 = unlimited)
     public int getNombreMaxTentatives() {
         return nbMot == 0 ? Integer.MAX_VALUE : nbMot + 1;
     }
@@ -53,8 +59,8 @@ public class Indice {
     public void setNbMot(int nbMot) {
         this.nbMot = nbMot;
     }
-
-    @Override
+    
+     @Override
     public String toString() {
         return mot + " " + (nbMot == 0 ? "∞" : nbMot);
     }

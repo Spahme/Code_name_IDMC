@@ -4,19 +4,12 @@
  */
 package codename.idmc.app.Interfaces;
 
-import codename.idmc.infrastructure.persistance.Saveable;// systhème de sauvegarde
-
 public class Carte {
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
+
     private int idCarte;
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private String contenu;
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private CouleurCarte type;
-    @Saveable//l'attribue suivante seras dans le fichier de sauvegarde
     private boolean retournee;
-
-
 
     public Carte(int idCarte, String contenu, CouleurCarte type) {
         this.idCarte = idCarte;
@@ -55,11 +48,5 @@ public class Carte {
 
     public void retourner() {
         this.retournee = true;
-    }
-
-    static class CouleurCarte {
-
-        public CouleurCarte() {
-        }
     }
 }

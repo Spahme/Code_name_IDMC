@@ -10,12 +10,13 @@ public class Grille {
     public static final int COLS = 5;
     public static final int SIZE = ROWS * COLS;
 
-    private Carte[][] cartes;
+   
 
     public static final int REDCARTESCOUNT = 8;
     public static final int BLUECARTESCOUNT = 9;
     public static final int WHITECARTESCOUNT = 7;
     public static final int BLACKCARTESCOUNT = 1;
+     private Carte[][] cartes;
 
     public Grille() {
         cartes = new Carte[ROWS][COLS];
