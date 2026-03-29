@@ -6,10 +6,12 @@ import codename.idmc.infrastructure.network.dto.CardDto;
 
 public class GameApiMapper {
 
-    public Carte toDomain(CardDto dto, int id) {
+    public Carte toDomain(CardDto dto) {
         return new Carte(
-                id,
-                dto.getName(),
+                dto.getId(),
+                dto.getTitle(),
+                dto.getDescription(),
+                dto.getIdDiff(),
                 CouleurCarte.NEUTRE
         );
     }

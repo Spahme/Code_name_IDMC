@@ -3,16 +3,25 @@ package codename.idmc.ui.view.carte;
 import codename.idmc.app.Interfaces.Carte;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class CarteViewController {
 
     @FXML
-    private StackPane rootCard;
+    private StackPane faceCachee;
 
     @FXML
-    private Label labelMot;
+    private Pane fondCouleur;
+
+    @FXML
+    private BorderPane carteRoot;
+
+    @FXML
+    private Label motLabel;
 
     private Carte carteModele;
 
@@ -21,37 +30,71 @@ public class CarteViewController {
         rafraichirAffichage();
     }
 
-    private void rafraichirAffichage() {
+    @FXML
+    private void auClicSurCarte(MouseEvent event) {
         if (carteModele == null) {
             return;
         }
 
-        labelMot.setText(carteModele.getContenu());
+        if (!carteModele.isRetournee()) {
+            carteModele.retourner();
+            rafraichirAffichage();
+        }
+    }
+
+    private void rafraichirAffichage() {
+        if (carteModele == null) {
+            motLabel.setText("Aucune carte");
+            faceCachee.setVisible(false);
+            return;
+        }
+
+        motLabel.setText(carteModele.getContenu());
 
         if (carteModele.isRetournee()) {
-            rootCard.setStyle(
-                "-fx-background-color: " + carteModele.getCouleurHex() + ";" +
-                "-fx-border-color: black;" +
-                "-fx-border-width: 1;" +
-                "-fx-background-radius: 8;" +
-                "-fx-border-radius: 8;"
-            );
-
-            if ("#212121".equalsIgnoreCase(carteModele.getCouleurHex())
-                    || "#1E88E5".equalsIgnoreCase(carteModele.getCouleurHex())) {
-                labelMot.setTextFill(Color.WHITE);
-            } else {
-                labelMot.setTextFill(Color.BLACK);
-            }
+            afficherCarteRetournee();
         } else {
-            rootCard.setStyle(
-                "-fx-background-color: white;" +
-                "-fx-border-color: black;" +
-                "-fx-border-width: 1;" +
-                "-fx-background-radius: 8;" +
-                "-fx-border-radius: 8;"
-            );
-            labelMot.setTextFill(Color.BLACK);
+            afficherCarteNormale();
+        }
+    }
+
+    private void afficherCarteNormale() {
+        faceCachee.setVisible(false);
+
+        carteRoot.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-border-color: black;" +
+            "-fx-border-width: 1;" +
+            "-fx-background-radius: 8;" +
+            "-fx-border-radius: 8;"
+        );
+
+        motLabel.setTextFill(Color.BLACK);
+    }
+
+    private void afficherCarteRetournee() {
+        String couleurHex = carteModele.getCouleurHex();
+
+        faceCachee.setVisible(true);
+
+        fondCouleur.setStyle(
+            "-fx-background-color: " + couleurHex + ";" +
+            "-fx-background-radius: 6;" +
+            "-fx-border-radius: 6;"
+        );
+
+        carteRoot.setStyle(
+            "-fx-background-color: " + couleurHex + ";" +
+            "-fx-border-color: black;" +
+            "-fx-border-width: 1;" +
+            "-fx-background-radius: 6;" +
+            "-fx-border-radius: 6;"
+        );
+
+        if ("#212121".equalsIgnoreCase(couleurHex) || "#1E88E5".equalsIgnoreCase(couleurHex)) {
+            motLabel.setTextFill(javafx.scene.paint.Color.WHITE);
+        } else {
+            motLabel.setTextFill(javafx.scene.paint.Color.BLACK);
         }
     }
 }

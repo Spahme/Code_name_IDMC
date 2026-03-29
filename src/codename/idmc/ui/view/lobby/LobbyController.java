@@ -1,11 +1,11 @@
 package codename.idmc.ui.view.lobby;
 
+import codename.idmc.application.usecases.CreatePartieUseCase;
 import codename.idmc.app.Interfaces.Agent;
 import codename.idmc.app.Interfaces.CouleurEquipe;
 import codename.idmc.app.Interfaces.Joueur;
 import codename.idmc.app.Interfaces.MaitreEspion;
 import codename.idmc.app.Interfaces.Partie;
-import codename.idmc.application.usecases.CreatePartieUseCase;
 import codename.idmc.ui.view.plateau.PlateauController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -14,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -78,9 +77,9 @@ public class LobbyController {
             return;
         }
 
-        CouleurEquipe couleurEquipe = "ROUGE".equals(equipe) ? CouleurEquipe.ROUGE : CouleurEquipe.BLEU;
+        CouleurEquipe couleur = "ROUGE".equals(equipe) ? CouleurEquipe.ROUGE : CouleurEquipe.BLEU;
 
-        joueurs.add(new LobbyPlayerRow(pseudo.trim(), couleurEquipe, role));
+        joueurs.add(new LobbyPlayerRow(pseudo.trim(), couleur, role));
 
         pseudoField.clear();
         equipeCombo.getSelectionModel().clearSelection();
@@ -107,7 +106,12 @@ public class LobbyController {
             verifierConfiguration();
 
             CreatePartieUseCase useCase = new CreatePartieUseCase();
-            Partie partie = useCase.execute(1, 2, 1, CouleurEquipe.ROUGE);
+            Partie partie = useCase.execute(
+                    1,
+                    3,
+                    1,
+                    CouleurEquipe.ROUGE
+            );
 
             for (LobbyPlayerRow row : joueurs) {
                 Joueur joueur;
@@ -122,10 +126,11 @@ public class LobbyController {
             }
 
             FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/codename/idmc/ui/view/plateau/board_view.fxml")
+                    getClass().getResource("/codename/idmc/ui/view/plateau/board_view.fxml")
             );
 
             Parent root = loader.load();
+
             PlateauController controller = loader.getController();
             controller.demarrerAffichageJeu(partie);
 

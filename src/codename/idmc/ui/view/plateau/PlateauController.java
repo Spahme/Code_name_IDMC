@@ -8,21 +8,30 @@ import codename.idmc.app.Interfaces.Partie;
 import codename.idmc.app.Interfaces.Carte;
 import codename.idmc.app.Interfaces.CouleurCarte;
 import codename.idmc.app.Interfaces.Plateau;
+import codename.idmc.ui.common.RemoteCursorOverlay;
 import codename.idmc.ui.view.Sauvegarde.SauvegarderPartiController;
 import codename.idmc.ui.view.carte.CarteViewController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import codename.idmc.app.Interfaces.CouleurEquipe;
 
 public class PlateauController implements Initializable {
+
+    @FXML
+    private Pane cursorOverlayContainer;
 
     @FXML
     private GridPane plateauPrincipal;
@@ -36,18 +45,69 @@ public class PlateauController implements Initializable {
     @FXML
     private ImageView xCloseMiniPlateau;
 
-    private Partie partieEnCours;
+    @FXML
+    private TextArea chatArea;
 
+    @FXML
+    private TextField chatInput;
+
+    private Partie partieEnCours;
+    private RemoteCursorOverlay remoteCursorOverlay;
+
+    
+    private CouleurEquipe equipeTest;
+    private String roleTest;
+    
+    public void configurerVueTest(CouleurEquipe equipe, String role) {
+        this.equipeTest = equipe;
+        this.roleTest = role;
+    }
+    
+    private void appliquerConfigurationVue() {
+        if (roleTest == null) {
+            return;
+        }
+
+        if ("MAITRE_ESPION".equals(roleTest)) {
+            plateauMEspionMini.setVisible(true);
+        } else {
+            plateauMEspionMini.setVisible(false);
+            xCloseMiniPlateau.setVisible(false);
+            plateauMEspionGrand.setVisible(false);
+            plateauPrincipal.setVisible(true);
+        }
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         xCloseMiniPlateau.setVisible(false);
         plateauMEspionGrand.setVisible(false);
+
+        initialiserOverlayCurseurs();
         configurerInteractionsEspion();
+
+        if (chatArea != null) {
+            chatArea.setText("Système : chat initialisé.\n");
+        }
+    }
+
+    private void initialiserOverlayCurseurs() {
+        if (cursorOverlayContainer != null) {
+            remoteCursorOverlay = new RemoteCursorOverlay();
+            remoteCursorOverlay.prefWidthProperty().bind(cursorOverlayContainer.widthProperty());
+            remoteCursorOverlay.prefHeightProperty().bind(cursorOverlayContainer.heightProperty());
+            cursorOverlayContainer.getChildren().add(remoteCursorOverlay);
+        }
     }
 
     public void demarrerAffichageJeu(Partie partie) {
         this.partieEnCours = partie;
         genererPlateaux();
+        appliquerConfigurationVue();
+
+        if (chatArea != null) {
+            ajouterMessageChat("Système", "Partie chargée.");
+        }
     }
 
     private void genererPlateaux() {
@@ -81,10 +141,13 @@ public class PlateauController implements Initializable {
 
     private void genererCartePrincipale(Carte vraieCarte, int ligne, int colonne) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/codename/idmc/ui/view/plateau/carte_view.fxml")
-            );
+            URL fxmlUrl = getClass().getResource("/codename/idmc/ui/view/carte/carte_view.fxml");
 
+            if (fxmlUrl == null) {
+                throw new IllegalStateException("FXML introuvable : /codename/idmc/ui/view/carte/carte_view.fxml");
+            }
+
+            FXMLLoader loader = new FXMLLoader(fxmlUrl);
             StackPane carteNode = loader.load();
 
             CarteViewController carteCtrl = loader.getController();
@@ -163,6 +226,46 @@ public class PlateauController implements Initializable {
 
         plateauMEspionMini.setCursor(Cursor.HAND);
         xCloseMiniPlateau.setCursor(Cursor.HAND);
+    }
+
+    @FXML
+    public void envoyerMessageChat(ActionEvent event) {
+        if (chatInput == null || chatArea == null) {
+            return;
+        }
+
+        String message = chatInput.getText();
+
+        if (message == null || message.isBlank()) {
+            return;
+        }
+
+        ajouterMessageChat("Moi", message.trim());
+        chatInput.clear();
+    }
+
+    public void ajouterMessageChat(String auteur, String message) {
+        if (chatArea == null) {
+            return;
+        }
+
+        chatArea.appendText(auteur + " : " + message + "\n");
+    }
+
+    public void updateRemoteCursor(String playerId, String pseudo, double x, double y) {
+        if (remoteCursorOverlay == null) {
+            return;
+        }
+
+        remoteCursorOverlay.updateCursor(playerId, pseudo, x, y);
+    }
+
+    public void removeRemoteCursor(String playerId) {
+        if (remoteCursorOverlay == null) {
+            return;
+        }
+
+        remoteCursorOverlay.removeCursor(playerId);
     }
 
     @FXML

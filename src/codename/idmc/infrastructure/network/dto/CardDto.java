@@ -1,22 +1,36 @@
 package codename.idmc.infrastructure.network.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CardDto {
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("id")
+    private int id;
 
-    @JsonProperty("diff_id")
-    private int diffId;
+    @JsonProperty("title")
+    private String title;
 
-    @JsonProperty("category_id")
-    private int categoryId;
+    @JsonProperty("description")
+    private String description;
 
-    @JsonProperty("establishment_id")
-    private int establishmentId;
+    @JsonProperty("id_diff")
+    private int idDiff;
 
-    public String getName() { return name; }
-    public int getDiffId() { return diffId; }
-    public int getCategoryId() { return categoryId; }
-    public int getEstablishmentId() { return establishmentId; }
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getIdDiff() {
+        return idDiff;
+    }
 }

@@ -29,17 +29,20 @@ public class CreatePartieUseCase {
 
         List<CardDto> dtos = api.searchCards(langueId, difficultyId, categorieId);
 
-        if (dtos == null || dtos.size() < 25) {
-            throw new IllegalStateException(
-                    "Pas assez de cartes pour créer un plateau (25 requis)"
-            );
+        if (dtos == null || dtos.isEmpty()) {
+            throw new IllegalStateException("Aucune carte reçue depuis l'API.");
+        }
+
+        System.out.println("Nombre de cartes reçues depuis l'API : " + dtos.size());
+
+        while (dtos.size() < 25) {
+            dtos.addAll(new ArrayList<>(dtos));
         }
 
         List<Carte> cartes = new ArrayList<>();
-        int id = 1;
 
-        for (CardDto dto : dtos) {
-            cartes.add(mapper.toDomain(dto, id++));
+        for (int i = 0; i < 25; i++) {
+            cartes.add(mapper.toDomain(dtos.get(i)));
         }
 
         Partie partie = new Partie();

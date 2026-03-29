@@ -1,19 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<StackPane fx:id="rootCard"
-           xmlns:fx="http://javafx.com/fxml"
-           fx:controller="codename.idmc.ui.view.card.CarteViewController"
-           prefWidth="140.0"
-           prefHeight="80.0"
-           style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 1; -fx-background-radius: 8; -fx-border-radius: 8;">
-    
+<StackPane xmlns="http://javafx.com/javafx/25"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="codename.idmc.ui.view.carte.CarteViewController"
+           onMouseClicked="#auClicSurCarte"
+           prefWidth="60.0"
+           prefHeight="100.0"
+           maxWidth="Infinity"
+           maxHeight="Infinity">
+
     <children>
-        <Label fx:id="labelMot"
-               text="Mot"
-               wrapText="true"
-               style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+        <StackPane fx:id="faceCachee"
+                   visible="false"
+                   style="-fx-background-radius: 6; -fx-border-radius: 6;">
+            <children>
+                <Pane fx:id="fondCouleur"
+                      prefWidth="60.0"
+                      prefHeight="100.0"
+                      style="-fx-background-radius: 6; -fx-border-radius: 6;" />
+            </children>
+        </StackPane>
+
+        <BorderPane fx:id="carteRoot"
+                    prefWidth="60.0"
+                    prefHeight="100.0"
+                    maxWidth="Infinity"
+                    maxHeight="Infinity"
+                    style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 1; -fx-background-radius: 6; -fx-border-radius: 6;">
+
+            <top>
+                <StackPane>
+                    <children>
+                        <Rectangle arcHeight="6.0"
+                                   arcWidth="6.0"
+                                   fill="#1c242c"
+                                   height="10.0"
+                                   width="60.0" />
+                    </children>
+                </StackPane>
+            </top>
+
+            <center>
+                <Label fx:id="motLabel"
+                       text="..."
+                       wrapText="true"
+                       textAlignment="CENTER"
+                       alignment="CENTER"
+                       maxWidth="50.0"
+                       style="-fx-font-weight: bold;">
+                    <font>
+                        <Font size="9.0" />
+                    </font>
+                    <padding>
+                        <Insets top="4.0" right="4.0" bottom="4.0" left="4.0" />
+                    </padding>
+                </Label>
+            </center>
+        </BorderPane>
     </children>
 </StackPane>

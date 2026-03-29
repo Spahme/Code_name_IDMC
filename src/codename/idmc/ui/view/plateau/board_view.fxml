@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -11,103 +13,117 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #e0e0e0;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="codename.idmc.ui.view.plateau.PlateauController">
-   <right>
-      <TitledPane animated="false" text="chat" BorderPane.alignment="CENTER">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="232.0" prefWidth="134.0" />
-        </content>
-      </TitledPane>
-   </right>
-   <top>
-      <BorderPane prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <left>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button mnemonicParsing="false" text="retour menu">
-                     <HBox.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </HBox.margin></Button>
-                  <Button mnemonicParsing="false" text="Profil">
-                     <HBox.margin>
-                        <Insets top="10.0" />
-                     </HBox.margin></Button>
-               </children>
-            </HBox>
-         </left>
-         <center>
-            <VBox alignment="CENTER" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="score">
-                     <font>
-                        <Font size="26.0" />
-                     </font>
-                  </Label>
-                  <Label text="2/4">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-         </center>
-      </BorderPane>
-   </top>
-   <center>
-      <StackPane BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </BorderPane.margin>
-         <children>
-            <GridPane fx:id="plateauPrincipal" alignment="CENTER" hgap="10.0" vgap="10.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-            <GridPane fx:id="plateauMEspionGrand" alignment="CENTER" hgap="10.0" layoutX="10.0" layoutY="10.0" vgap="10.0" visible="false">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-         </children>
-      </StackPane>
-   </center>
-   <bottom>
-      <AnchorPane fx:id="miniPlateauContainer" prefHeight="200.0" prefWidth="200.0" style="-fx-padding: 15;" BorderPane.alignment="CENTER">
-         <children>
-            <StackPane layoutX="25.0" layoutY="25.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
-               <children>
-                  <GridPane fx:id="plateauMEspionMini" prefWidth="250.0">
+<BorderPane maxHeight="-Infinity"
+            maxWidth="-Infinity"
+            minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="800.0"
+            prefWidth="1200.0"
+            style="-fx-background-color: #e0e0e0;"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="codename.idmc.ui.view.plateau.PlateauController">
+
+    <right>
+        <TitledPane animated="false"
+                    text="Chat"
+                    BorderPane.alignment="CENTER"
+                    prefWidth="300.0"
+                    expanded="true">
+            <content>
+                <VBox spacing="10.0"
+                      prefWidth="280.0"
+                      prefHeight="700.0"
+                      style="-fx-padding: 10;">
+                    <children>
+                        <Label text="Discussion"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+                        <TextArea fx:id="chatArea"
+                                  editable="false"
+                                  wrapText="true"
+                                  prefHeight="560.0"
+                                  promptText="Les messages apparaîtront ici..." />
+
+                        <HBox spacing="8.0">
+                            <children>
+                                <TextField fx:id="chatInput"
+                                           HBox.hgrow="ALWAYS"
+                                           promptText="Écrire un message..."
+                                           onAction="#envoyerMessageChat" />
+                                <Button text="Envoyer"
+                                        onAction="#envoyerMessageChat" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </content>
+        </TitledPane>
+    </right>
+
+    <top>
+        <BorderPane prefHeight="100.0"
+                    prefWidth="200.0"
+                    BorderPane.alignment="CENTER">
+            <left>
+                <HBox prefHeight="100.0"
+                      prefWidth="200.0"
+                      spacing="10.0"
+                      BorderPane.alignment="CENTER">
+                    <children>
+                        <Button mnemonicParsing="false" text="retour menu">
+                            <HBox.margin>
+                                <Insets left="10.0" top="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" text="Profil">
+                            <HBox.margin>
+                                <Insets top="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+            </left>
+
+            <center>
+                <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+                    <children>
+                        <Label text="score">
+                            <font>
+                                <Font size="26.0" />
+                            </font>
+                        </Label>
+                        <Label text="2/4">
+                            <font>
+                                <Font size="21.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </center>
+        </BorderPane>
+    </top>
+
+    <center>
+        <StackPane BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </BorderPane.margin>
+
+            <children>
+                <GridPane fx:id="plateauPrincipal"
+                          alignment="CENTER"
+                          hgap="10.0"
+                          vgap="10.0">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -115,26 +131,93 @@
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-                  </GridPane>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" fx:id="xCloseMiniPlateau">
-                     <image>
-                        <Image url="@../../../../assets/icons/views/Sans%20titre.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </StackPane>
-         </children>
-      </AnchorPane>
-   </bottom>
-   <left>
-      <Button mnemonicParsing="false" onAction="#sauvegarderPartie" text="Sauvegarder" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets left="10.0" />
-         </BorderPane.margin>
-      </Button>
-   </left>
+                </GridPane>
+
+                <GridPane fx:id="plateauMEspionGrand"
+                          alignment="CENTER"
+                          hgap="10.0"
+                          vgap="10.0"
+                          visible="false">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
+
+                <Pane fx:id="cursorOverlayContainer"
+                      mouseTransparent="true"
+                      pickOnBounds="false" />
+            </children>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <AnchorPane fx:id="miniPlateauContainer"
+                    prefHeight="200.0"
+                    prefWidth="200.0"
+                    style="-fx-padding: 15;"
+                    BorderPane.alignment="CENTER">
+            <children>
+                <StackPane layoutX="25.0"
+                           layoutY="25.0"
+                           AnchorPane.leftAnchor="10.0"
+                           AnchorPane.topAnchor="10.0">
+                    <children>
+                        <GridPane fx:id="plateauMEspionMini" prefWidth="250.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                        </GridPane>
+
+                        <ImageView fx:id="xCloseMiniPlateau"
+                                   fitHeight="150.0"
+                                   fitWidth="200.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true"
+                                   visible="false">
+                            <image>
+                                <Image url="@../../../../assets/icons/views/Sans%20titre.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </StackPane>
+            </children>
+        </AnchorPane>
+    </bottom>
+
+    <left>
+        <Button mnemonicParsing="false"
+                onAction="#sauvegarderPartie"
+                text="Sauvegarder"
+                BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets left="10.0" />
+            </BorderPane.margin>
+        </Button>
+    </left>
 </BorderPane>

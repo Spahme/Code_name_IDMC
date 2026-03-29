@@ -16,9 +16,21 @@ public class Carte {
     @Saveable
     private boolean retournee;
 
+    private String description;
+    private int idDiff;
+
     public Carte(int idCarte, String contenu, CouleurCarte type) {
         this.idCarte = idCarte;
         this.contenu = contenu;
+        this.type = type;
+        this.retournee = false;
+    }
+
+    public Carte(int idCarte, String contenu, String description, int idDiff, CouleurCarte type) {
+        this.idCarte = idCarte;
+        this.contenu = contenu;
+        this.description = description;
+        this.idDiff = idDiff;
         this.type = type;
         this.retournee = false;
     }
@@ -59,24 +71,42 @@ public class Carte {
         this.retournee = retournee;
     }
 
-    public String getCouleurHex() {
-    if (type == null) {
-        return "#FFFFFF";
+    public String getDescription() {
+        return description;
     }
 
-    return switch (type) {
-        case ROUGE -> "#E53935";
-        case BLEU -> "#1E88E5";
-        case NEUTRE -> "#D6D6D6";
-        case ASSASSIN -> "#212121";
-    };
-}
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getIdDiff() {
+        return idDiff;
+    }
+
+    public void setIdDiff(int idDiff) {
+        this.idDiff = idDiff;
+    }
+
+    public String getCouleurHex() {
+        if (type == null) {
+            return "#FFFFFF";
+        }
+
+        return switch (type) {
+            case ROUGE -> "#E53935";
+            case BLEU -> "#1E88E5";
+            case NEUTRE -> "#D6D6D6";
+            case ASSASSIN -> "#212121";
+        };
+    }
 
     @Override
     public String toString() {
         return "Carte{" +
                 "idCarte=" + idCarte +
                 ", contenu='" + contenu + '\'' +
+                ", description='" + description + '\'' +
+                ", idDiff=" + idDiff +
                 ", type=" + type +
                 ", retournee=" + retournee +
                 '}';
