@@ -20,4 +20,4 @@ nbdist/
 *.jar
 *.war
 *.ear
-
+.DS_Store

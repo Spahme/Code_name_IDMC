@@ -11,7 +11,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/codename/idmc/ui/view/loby/lobby_view.fxml")
+                getClass().getResource("/codename/idmc/ui/view/lobby/lobby_view.fxml")
         );
 
         Parent root = loader.load();

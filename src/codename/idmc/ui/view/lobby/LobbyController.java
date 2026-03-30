@@ -6,7 +6,13 @@ import codename.idmc.app.Interfaces.CouleurEquipe;
 import codename.idmc.app.Interfaces.Joueur;
 import codename.idmc.app.Interfaces.MaitreEspion;
 import codename.idmc.app.Interfaces.Partie;
+import codename.idmc.infrastructure.network.multiplayer.client.GameClient;
+import codename.idmc.infrastructure.network.multiplayer.dto.LobbyStateDto;
+import codename.idmc.infrastructure.network.multiplayer.dto.NetworkMessage;
+import codename.idmc.infrastructure.network.multiplayer.protocol.MessageType;
 import codename.idmc.ui.view.plateau.PlateauController;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +26,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.util.Map;
 
 public class LobbyController {
 
@@ -49,6 +57,9 @@ public class LobbyController {
 
     private final ObservableList<LobbyPlayerRow> joueurs = FXCollections.observableArrayList();
 
+    private GameClient client;
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @FXML
     public void initialize() {
         equipeCombo.setItems(FXCollections.observableArrayList("ROUGE", "BLEU"));
@@ -59,6 +70,55 @@ public class LobbyController {
         roleColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRole()));
 
         joueursTable.setItems(joueurs);
+    }
+
+    public void setClient(GameClient client) {
+        this.client = client;
+
+        if (this.client != null) {
+            this.client.setMessageListener(this::handleMessage);
+
+            try {
+                this.client.send(new NetworkMessage(
+                        MessageType.LOBBY_STATE,
+                        "CLIENT",
+                        "REQUEST"
+                ));
+            } catch (Exception e) {
+                messageLabel.setText("Erreur sync lobby");
+            }
+        }
+    }
+
+    private void handleMessage(NetworkMessage msg) {
+        if (msg.getType() == MessageType.LOBBY_STATE) {
+            LobbyStateDto state = mapper.convertValue(
+                    msg.getPayload(),
+                    LobbyStateDto.class
+            );
+
+            Platform.runLater(() -> {
+                joueurs.clear();
+
+                state.getPlayers().forEach(p -> {
+                    CouleurEquipe equipe = "ROUGE".equals(p.getEquipe())
+                            ? CouleurEquipe.ROUGE
+                            : CouleurEquipe.BLEU;
+
+                    joueurs.add(new LobbyPlayerRow(
+                            p.getPseudo(),
+                            equipe,
+                            p.getRole()
+                    ));
+                });
+
+                messageLabel.setText("Lobby synchronisé");
+            });
+        }
+
+        if (msg.getType() == MessageType.START_GAME) {
+            Platform.runLater(() -> messageLabel.setText("La partie démarre..."));
+        }
     }
 
     @FXML
@@ -102,6 +162,21 @@ public class LobbyController {
 
     @FXML
     private void lancerPartie() {
+        if (client != null) {
+            try {
+                client.send(new NetworkMessage(
+                        MessageType.START_GAME,
+                        "CLIENT",
+                        "START"
+                ));
+                messageLabel.setText("Demande de lancement envoyée...");
+                return;
+            } catch (Exception e) {
+                messageLabel.setText("Erreur lancement réseau");
+                return;
+            }
+        }
+
         try {
             verifierConfiguration();
 
@@ -168,22 +243,6 @@ public class LobbyController {
 
         if (meRouge != 1 || meBleu != 1) {
             throw new IllegalStateException("Chaque équipe doit avoir exactement 1 maître espion.");
-        }
-    }
-    private void ouvrirLobbyLocal() {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/codename/idmc/ui/view/lobby/lobby_view.fxml")
-            );
-
-            Parent root = loader.load();
-
-            Stage stage = (Stage) pseudoField.getScene().getWindow(); // ✅ FIX
-            stage.setScene(new Scene(root));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            messageLabel.setText("Erreur ouverture lobby");
         }
     }
 }

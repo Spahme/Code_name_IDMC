@@ -20,7 +20,7 @@ public class GameServer {
     private final String hostPseudo;
     private final int maxPlayers;
 
-    private static final boolean DEV_MODE = true;
+    private static final boolean DEV_MODE = false;
 
     public GameServer(int port, String lobbyName, String hostPseudo, int maxPlayers) {
         this.port = port;
