@@ -8,7 +8,11 @@ import codename.idmc.infrastructure.network.multiplayer.protocol.MessageType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.UUID;
 
@@ -47,8 +51,15 @@ public class ClientHandler implements Runnable {
                     case LEAVE_LOBBY -> handleLeaveLobby();
                     case CHAT_MESSAGE -> handleChatMessage(payload);
                     case CURSOR_MOVED -> handleCursorMoved(payload);
+                    case UPDATE_PLAYER -> handleUpdatePlayer(payload);
+                    case UPDATE_GAME_SETTINGS -> handleUpdateGameSettings(payload);
+                    case LOBBY_STATE -> handleLobbyStateRequest();
                     case START_GAME -> handleStartGame();
-                    default -> send(new NetworkMessage(MessageType.ERROR, "SERVER", "Type de message non géré"));
+                    default -> send(new NetworkMessage(
+                            MessageType.ERROR,
+                            "SERVER",
+                            "Type non géré"
+                    ));
                 }
             }
 
@@ -61,7 +72,9 @@ public class ClientHandler implements Runnable {
 
     private void handleJoinLobby(JsonNode payload) {
         this.playerId = UUID.randomUUID().toString();
-        this.pseudo = payload.has("pseudo") ? payload.get("pseudo").asText() : "Invité";
+        this.pseudo = payload.has("pseudo")
+                ? payload.get("pseudo").asText()
+                : "Invité";
 
         LobbyPlayerDto player = new LobbyPlayerDto(
                 playerId,
@@ -69,10 +82,64 @@ public class ClientHandler implements Runnable {
                 "ROUGE",
                 "AGENT",
                 false,
-                lobbyRoom == null
+                lobbyRoom.getCurrentPlayers() == 0
         );
 
         lobbyRoom.addClient(this, player);
+    }
+
+    private void handleUpdatePlayer(JsonNode payload) {
+        String equipe = payload.get("equipe").asText();
+        String role = payload.get("role").asText();
+        boolean ready = payload.get("ready").asBoolean();
+
+        lobbyRoom.updatePlayer(playerId, equipe, role, ready);
+    }
+
+    private void handleUpdateGameSettings(JsonNode payload) {
+        int langueId = payload.get("langueId").asInt();
+        int difficultyId = payload.get("difficultyId").asInt();
+        int categorieId = payload.get("categorieId").asInt();
+        String equipeCommencante = payload.get("equipeCommencante").asText();
+
+        lobbyRoom.updateGameSettings(
+                langueId,
+                difficultyId,
+                categorieId,
+                equipeCommencante
+        );
+    }
+
+    private void handleChatMessage(JsonNode payload) throws IOException {
+        ChatMessageDto chat = mapper.treeToValue(payload, ChatMessageDto.class);
+
+        NetworkMessage msg = new NetworkMessage(
+                MessageType.CHAT_MESSAGE,
+                playerId,
+                chat
+        );
+
+        lobbyRoom.broadcast(msg);
+    }
+
+    private void handleCursorMoved(JsonNode payload) throws IOException {
+        CursorPositionDto cursor = mapper.treeToValue(payload, CursorPositionDto.class);
+
+        NetworkMessage msg = new NetworkMessage(
+                MessageType.CURSOR_MOVED,
+                playerId,
+                cursor
+        );
+
+        lobbyRoom.broadcastExcept(playerId, msg);
+    }
+
+    private void handleLobbyStateRequest() {
+        lobbyRoom.broadcastLobbyState();
+    }
+
+    private void handleStartGame() {
+        lobbyRoom.startGame();
     }
 
     private void handleLeaveLobby() {
@@ -81,26 +148,8 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void handleChatMessage(JsonNode payload) throws IOException {
-        ChatMessageDto chat = mapper.treeToValue(payload, ChatMessageDto.class);
-        NetworkMessage msg = new NetworkMessage(MessageType.CHAT_MESSAGE, playerId, chat);
-        lobbyRoom.broadcast(msg);
-    }
-
-    private void handleCursorMoved(JsonNode payload) throws IOException {
-        CursorPositionDto cursor = mapper.treeToValue(payload, CursorPositionDto.class);
-        NetworkMessage msg = new NetworkMessage(MessageType.CURSOR_MOVED, playerId, cursor);
-        lobbyRoom.broadcastExcept(playerId, msg);
-    }
-
-    private void handleStartGame() {
-        NetworkMessage msg = new NetworkMessage(MessageType.START_GAME, playerId, "START");
-        lobbyRoom.broadcast(msg);
-    }
-
     public void send(NetworkMessage message) throws IOException {
-        String json = mapper.writeValueAsString(message);
-        writer.println(json);
+        writer.println(mapper.writeValueAsString(message));
     }
 
     private void cleanup() {

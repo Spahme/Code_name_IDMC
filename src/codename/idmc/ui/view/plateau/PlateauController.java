@@ -2,12 +2,13 @@ package codename.idmc.ui.view.plateau;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
-import codename.idmc.app.Interfaces.Partie;
-import codename.idmc.app.Interfaces.Carte;
-import codename.idmc.app.Interfaces.CouleurCarte;
-import codename.idmc.app.Interfaces.Plateau;
+import codename.idmc.application.validators.CardSelectionValidationResult;
+import codename.idmc.application.validators.CardSelectionValidator;
+import codename.idmc.app.Interfaces.*;
 import codename.idmc.ui.common.RemoteCursorOverlay;
 import codename.idmc.ui.view.Sauvegarde.SauvegarderPartiController;
 import codename.idmc.ui.view.carte.CarteViewController;
@@ -16,82 +17,56 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import codename.idmc.app.Interfaces.CouleurEquipe;
+import javafx.scene.layout.*;
 
 public class PlateauController implements Initializable {
 
-    @FXML
-    private Pane cursorOverlayContainer;
+    /* ================= FXML ================= */
 
-    @FXML
-    private GridPane plateauPrincipal;
+    @FXML private Pane cursorOverlayContainer;
 
-    @FXML
-    private GridPane plateauMEspionGrand;
+    @FXML private GridPane plateauPrincipal;
+    @FXML private GridPane plateauMEspionGrand;
+    @FXML private GridPane plateauMEspionMini;
 
-    @FXML
-    private GridPane plateauMEspionMini;
+    @FXML private ImageView xCloseMiniPlateau;
 
-    @FXML
-    private ImageView xCloseMiniPlateau;
+    @FXML private TextArea chatArea;
+    @FXML private TextField chatInput;
 
-    @FXML
-    private TextArea chatArea;
+    @FXML private Label infoEquipeRole;
+    @FXML private Label infoTour;
 
-    @FXML
-    private TextField chatInput;
+    /* ================= STATE ================= */
 
     private Partie partieEnCours;
     private RemoteCursorOverlay remoteCursorOverlay;
 
-    
-    private CouleurEquipe equipeTest;
-    private String roleTest;
-    
-    public void configurerVueTest(CouleurEquipe equipe, String role) {
-        this.equipeTest = equipe;
-        this.roleTest = role;
-    }
-    
-    private void appliquerConfigurationVue() {
-        if (roleTest == null) {
-            return;
-        }
+    private CouleurEquipe equipeLocale;
+    private String roleLocal;
 
-        if ("MAITRE_ESPION".equals(roleTest)) {
-            plateauMEspionMini.setVisible(true);
-        } else {
-            plateauMEspionMini.setVisible(false);
-            xCloseMiniPlateau.setVisible(false);
-            plateauMEspionGrand.setVisible(false);
-            plateauPrincipal.setVisible(true);
-        }
-    }
-    
+    private final Map<Carte, CarteViewController> carteControllers = new HashMap<>();
+    private final CardSelectionValidator validator = new CardSelectionValidator();
+
+    /* ================= INIT ================= */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         xCloseMiniPlateau.setVisible(false);
         plateauMEspionGrand.setVisible(false);
 
-        initialiserOverlayCurseurs();
+        initialiserOverlay();
         configurerInteractionsEspion();
 
-        if (chatArea != null) {
-            chatArea.setText("Système : chat initialisé.\n");
-        }
+        ajouterMessageChat("Système", "UI prête.");
     }
 
-    private void initialiserOverlayCurseurs() {
+    private void initialiserOverlay() {
         if (cursorOverlayContainer != null) {
             remoteCursorOverlay = new RemoteCursorOverlay();
             remoteCursorOverlay.prefWidthProperty().bind(cursorOverlayContainer.widthProperty());
@@ -100,105 +75,197 @@ public class PlateauController implements Initializable {
         }
     }
 
+    /* ================= CONFIG ================= */
+
+    public void configurerVueTest(CouleurEquipe equipe, String role) {
+        this.equipeLocale = equipe;
+        this.roleLocal = role;
+    }
+
+    /* ================= DEMARRAGE ================= */
+
     public void demarrerAffichageJeu(Partie partie) {
         this.partieEnCours = partie;
-        genererPlateaux();
-        appliquerConfigurationVue();
 
-        if (chatArea != null) {
-            ajouterMessageChat("Système", "Partie chargée.");
+        genererPlateaux();
+        appliquerVueSelonRole();
+
+        afficherInfosJoueur();
+        afficherTour();
+
+        ajouterMessageChat("Système",
+                "Partie lancée - " + equipeLocale + " / " + roleLocal);
+    }
+
+    private void appliquerVueSelonRole() {
+        if ("MAITRE_ESPION".equals(roleLocal)) {
+            plateauMEspionMini.setVisible(true);
+        } else {
+            plateauMEspionMini.setVisible(false);
+            plateauMEspionGrand.setVisible(false);
+            plateauPrincipal.setVisible(true);
         }
     }
 
-    private void genererPlateaux() {
-        if (partieEnCours == null || partieEnCours.getPlateau() == null) {
-            System.out.println("Aucune partie ou aucun plateau disponible.");
-            return;
-        }
+    /* ================= GENERATION ================= */
 
-        Plateau vraiPlateau = partieEnCours.getPlateau();
+    private void genererPlateaux() {
+        Plateau plateau = partieEnCours.getPlateau();
 
         plateauPrincipal.getChildren().clear();
         plateauMEspionMini.getChildren().clear();
         plateauMEspionGrand.getChildren().clear();
+        carteControllers.clear();
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                Carte vraieCarte = vraiPlateau.getCartePosition(i, j);
 
-                if (vraieCarte == null) {
-                    continue;
-                }
+                Carte carte = plateau.getCartePosition(i, j);
+                if (carte == null) continue;
 
-                String couleurHex = getCouleurHex(vraieCarte);
-
-                genererCartePrincipale(vraieCarte, i, j);
-                genererMiniPlateauEspion(couleurHex, i, j);
-                genererGrandPlateauEspion(vraieCarte, couleurHex, i, j);
+                genererCarte(carte, i, j);
+                genererMini(carte, i, j);
+                genererGrand(carte, i, j);
             }
         }
     }
 
-    private void genererCartePrincipale(Carte vraieCarte, int ligne, int colonne) {
+    private void genererCarte(Carte carte, int ligne, int colonne) {
         try {
-            URL fxmlUrl = getClass().getResource("/codename/idmc/ui/view/carte/carte_view.fxml");
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/codename/idmc/ui/view/carte/carte_view.fxml")
+            );
 
-            if (fxmlUrl == null) {
-                throw new IllegalStateException("FXML introuvable : /codename/idmc/ui/view/carte/carte_view.fxml");
-            }
+            StackPane node = loader.load();
+            CarteViewController ctrl = loader.getController();
 
-            FXMLLoader loader = new FXMLLoader(fxmlUrl);
-            StackPane carteNode = loader.load();
+            ctrl.initialiserCarte(carte);
+            ctrl.setClickListener(this::onCarteCliquee);
 
-            CarteViewController carteCtrl = loader.getController();
-            carteCtrl.initialiserCarte(vraieCarte);
-
-            carteNode.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            GridPane.setHgrow(carteNode, Priority.ALWAYS);
-            GridPane.setVgrow(carteNode, Priority.ALWAYS);
-
-            plateauPrincipal.add(carteNode, colonne, ligne);
+            carteControllers.put(carte, ctrl);
+            plateauPrincipal.add(node, colonne, ligne);
 
         } catch (IOException e) {
-            System.err.println("Erreur de chargement du FXML de la carte : " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private void genererMiniPlateauEspion(String couleurHex, int ligne, int colonne) {
-        VBox miniCase = new VBox();
-        miniCase.setStyle("-fx-background-color: " + couleurHex + "; -fx-border-color: black;");
-        miniCase.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-        GridPane.setHgrow(miniCase, Priority.ALWAYS);
-        GridPane.setVgrow(miniCase, Priority.ALWAYS);
-
-        plateauMEspionMini.add(miniCase, colonne, ligne);
+    private void genererMini(Carte carte, int l, int c) {
+        VBox box = new VBox();
+        box.setStyle("-fx-background-color:" + getCouleurHex(carte) + "; -fx-border-color:black;");
+        plateauMEspionMini.add(box, c, l);
     }
 
-    private void genererGrandPlateauEspion(Carte vraieCarte, String couleurHex, int ligne, int colonne) {
-        StackPane caseEspionGrand = new StackPane();
-        caseEspionGrand.setStyle("-fx-background-color: " + couleurHex + "; -fx-border-color: black;");
-        caseEspionGrand.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+    private void genererGrand(Carte carte, int l, int c) {
+        StackPane box = new StackPane();
+        String couleur = getCouleurHex(carte);
 
-        GridPane.setHgrow(caseEspionGrand, Priority.ALWAYS);
-        GridPane.setVgrow(caseEspionGrand, Priority.ALWAYS);
+        box.setStyle("-fx-background-color:" + couleur + "; -fx-border-color:black;");
 
-        Label motEspion = new Label(vraieCarte.getContenu());
-        motEspion.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+        Label label = new Label(carte.getContenu());
+        label.setStyle("-fx-font-size:18px; -fx-font-weight:bold;");
 
-        if ("#212121".equalsIgnoreCase(couleurHex) || "#1E88E5".equalsIgnoreCase(couleurHex)) {
-            motEspion.setTextFill(Color.WHITE);
+        box.getChildren().add(label);
+        plateauMEspionGrand.add(box, c, l);
+    }
+
+    /* ================= LOGIQUE ================= */
+
+    private void onCarteCliquee(Carte carte) {
+
+        CardSelectionValidationResult result = validator.validate(
+                partieEnCours, carte, equipeLocale, roleLocal);
+
+        if (!result.isValide()) {
+            afficher(result.getMessage());
+            return;
         }
 
-        caseEspionGrand.getChildren().add(motEspion);
-        plateauMEspionGrand.add(caseEspionGrand, colonne, ligne);
+        boolean continuer = partieEnCours.jouerCarte(carte.getContenu());
+
+        rafraichirCartes();
+        rafraichirInfosPartie();
+
+        if (!partieEnCours.isEstEnCours()) {
+            afficher("Partie terminée");
+            return;
+        }
+
+        ajouterMessageChat("Système",
+                continuer ? "Bonne carte" : "Fin du tour");
     }
 
-    private String getCouleurHex(Carte carte) {
-        CouleurCarte type = carte.getType();
+    public void donnerIndiceTest(String mot, int nb) {
+        if (!"MAITRE_ESPION".equals(roleLocal)) {
+            afficher("Seul le maître espion peut donner un indice");
+            return;
+        }
 
-        return switch (type) {
+        partieEnCours.donnerIndice(mot, nb);
+        ajouterMessageChat("Indice", mot + " (" + nb + ")");
+    }
+
+    /* ================= REFRESH ================= */
+
+    private void rafraichirCartes() {
+        carteControllers.values().forEach(CarteViewController::rafraichirAffichage);
+    }
+
+    private void rafraichirInfosPartie() {
+        afficherTour();
+
+        ajouterMessageChat("Tour",
+                partieEnCours.getEquipeCourante().getNom());
+    }
+
+    /* ================= HUD ================= */
+
+    private void afficherInfosJoueur() {
+        if (infoEquipeRole == null) return;
+
+        String equipe = (equipeLocale == CouleurEquipe.ROUGE) ? "ROUGE" : "BLEU";
+        String role = "AGENT".equals(roleLocal) ? "Agent" : "Maître espion";
+
+        infoEquipeRole.setText("Vous êtes : " + role + " - " + equipe);
+
+        if (equipeLocale == CouleurEquipe.ROUGE) {
+            infoEquipeRole.setStyle("-fx-text-fill:#E53935; -fx-font-weight:bold;");
+        } else {
+            infoEquipeRole.setStyle("-fx-text-fill:#1E88E5; -fx-font-weight:bold;");
+        }
+    }
+
+    private void afficherTour() {
+        if (infoTour == null || partieEnCours == null) return;
+
+        infoTour.setText("Tour : " + partieEnCours.getEquipeCourante().getNom());
+
+        if (partieEnCours.getEquipeCourante().getCouleur() == equipeLocale) {
+            infoTour.setStyle("-fx-text-fill: green; -fx-font-weight:bold;");
+        } else {
+            infoTour.setStyle("-fx-text-fill: gray;");
+        }
+    }
+
+    /* ================= CHAT ================= */
+
+    @FXML
+    public void envoyerMessageChat(ActionEvent e) {
+        String msg = chatInput.getText();
+        if (msg == null || msg.isBlank()) return;
+
+        ajouterMessageChat("Moi", msg);
+        chatInput.clear();
+    }
+
+    private void ajouterMessageChat(String auteur, String msg) {
+        chatArea.appendText(auteur + " : " + msg + "\n");
+    }
+
+    /* ================= UTILS ================= */
+
+    private String getCouleurHex(Carte c) {
+        return switch (c.getType()) {
             case ROUGE -> "#E53935";
             case BLEU -> "#1E88E5";
             case NEUTRE -> "#D6D6D6";
@@ -206,74 +273,45 @@ public class PlateauController implements Initializable {
         };
     }
 
-    private void configurerInteractionsEspion() {
-        plateauMEspionMini.setOnMouseClicked(event -> {
-            plateauMEspionMini.setVisible(false);
-            xCloseMiniPlateau.setVisible(true);
+    private void afficher(String msg) {
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setContentText(msg);
+        a.showAndWait();
+    }
 
+    private void configurerInteractionsEspion() {
+        plateauMEspionMini.setOnMouseClicked(e -> {
             plateauPrincipal.setVisible(false);
             plateauMEspionGrand.setVisible(true);
-            plateauMEspionGrand.toFront();
+            xCloseMiniPlateau.setVisible(true);
         });
 
-        xCloseMiniPlateau.setOnMouseClicked(event -> {
-            xCloseMiniPlateau.setVisible(false);
-            plateauMEspionMini.setVisible(true);
-
-            plateauMEspionGrand.setVisible(false);
+        xCloseMiniPlateau.setOnMouseClicked(e -> {
             plateauPrincipal.setVisible(true);
+            plateauMEspionGrand.setVisible(false);
+            xCloseMiniPlateau.setVisible(false);
         });
 
         plateauMEspionMini.setCursor(Cursor.HAND);
         xCloseMiniPlateau.setCursor(Cursor.HAND);
     }
 
-    @FXML
-    public void envoyerMessageChat(ActionEvent event) {
-        if (chatInput == null || chatArea == null) {
-            return;
-        }
+    /* ================= CURSORS ================= */
 
-        String message = chatInput.getText();
-
-        if (message == null || message.isBlank()) {
-            return;
-        }
-
-        ajouterMessageChat("Moi", message.trim());
-        chatInput.clear();
+    public void updateRemoteCursor(String id, String pseudo, double x, double y) {
+        remoteCursorOverlay.updateCursor(id, pseudo, x, y);
     }
 
-    public void ajouterMessageChat(String auteur, String message) {
-        if (chatArea == null) {
-            return;
-        }
-
-        chatArea.appendText(auteur + " : " + message + "\n");
+    public void removeRemoteCursor(String id) {
+        remoteCursorOverlay.removeCursor(id);
     }
 
-    public void updateRemoteCursor(String playerId, String pseudo, double x, double y) {
-        if (remoteCursorOverlay == null) {
-            return;
-        }
-
-        remoteCursorOverlay.updateCursor(playerId, pseudo, x, y);
-    }
-
-    public void removeRemoteCursor(String playerId) {
-        if (remoteCursorOverlay == null) {
-            return;
-        }
-
-        remoteCursorOverlay.removeCursor(playerId);
-    }
+    /* ================= SAVE ================= */
 
     @FXML
     public void sauvegarderPartie() {
         if (partieEnCours != null) {
             SauvegarderPartiController.ouvrirPopup(partieEnCours);
-        } else {
-            System.out.println("Impossible de sauvegarder : aucune partie n'est en cours.");
         }
     }
 }

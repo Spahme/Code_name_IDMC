@@ -24,10 +24,15 @@ public class CarteViewController {
     private Label motLabel;
 
     private Carte carteModele;
+    private CardClickListener clickListener;
 
     public void initialiserCarte(Carte carte) {
         this.carteModele = carte;
         rafraichirAffichage();
+    }
+
+    public void setClickListener(CardClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
     @FXML
@@ -36,13 +41,12 @@ public class CarteViewController {
             return;
         }
 
-        if (!carteModele.isRetournee()) {
-            carteModele.retourner();
-            rafraichirAffichage();
+        if (clickListener != null) {
+            clickListener.onCardClicked(carteModele);
         }
     }
 
-    private void rafraichirAffichage() {
+    public void rafraichirAffichage() {
         if (carteModele == null) {
             motLabel.setText("Aucune carte");
             faceCachee.setVisible(false);
@@ -65,8 +69,8 @@ public class CarteViewController {
             "-fx-background-color: white;" +
             "-fx-border-color: black;" +
             "-fx-border-width: 1;" +
-            "-fx-background-radius: 8;" +
-            "-fx-border-radius: 8;"
+            "-fx-background-radius: 6;" +
+            "-fx-border-radius: 6;"
         );
 
         motLabel.setTextFill(Color.BLACK);
@@ -92,9 +96,9 @@ public class CarteViewController {
         );
 
         if ("#212121".equalsIgnoreCase(couleurHex) || "#1E88E5".equalsIgnoreCase(couleurHex)) {
-            motLabel.setTextFill(javafx.scene.paint.Color.WHITE);
+            motLabel.setTextFill(Color.WHITE);
         } else {
-            motLabel.setTextFill(javafx.scene.paint.Color.BLACK);
+            motLabel.setTextFill(Color.BLACK);
         }
     }
 }

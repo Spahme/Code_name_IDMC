@@ -170,4 +170,20 @@ public class LobbyController {
             throw new IllegalStateException("Chaque équipe doit avoir exactement 1 maître espion.");
         }
     }
+    private void ouvrirLobbyLocal() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/codename/idmc/ui/view/lobby/lobby_view.fxml")
+            );
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) pseudoField.getScene().getWindow(); // ✅ FIX
+            stage.setScene(new Scene(root));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            messageLabel.setText("Erreur ouverture lobby");
+        }
+    }
 }

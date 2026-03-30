@@ -94,16 +94,28 @@
             <center>
                 <VBox alignment="CENTER" BorderPane.alignment="CENTER">
                     <children>
+
                         <Label text="score">
                             <font>
                                 <Font size="26.0" />
                             </font>
                         </Label>
+
                         <Label text="2/4">
                             <font>
                                 <Font size="21.0" />
                             </font>
                         </Label>
+
+                        <!-- AJOUT -->
+                        <Label fx:id="infoEquipeRole"
+                               text="Equipe / Role"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+                        <Label fx:id="infoTour"
+                               text="Tour"
+                               style="-fx-font-size: 14px;" />
+
                     </children>
                 </VBox>
             </center>
@@ -120,7 +132,8 @@
                 <GridPane fx:id="plateauPrincipal"
                           alignment="CENTER"
                           hgap="10.0"
-                          vgap="10.0">
+                          vgap="10.0"
+                          style="margin-top: 30px;">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

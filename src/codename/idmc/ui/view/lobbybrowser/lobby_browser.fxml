@@ -24,7 +24,7 @@
             <left>
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <children>
-                        <Button text="<-- Retour" onAction="#retourMenu"/>
+                        <Button text="← Retour" onAction="#retourMenu"/>
                     </children>
                     <padding>
                         <Insets left="10" top="10"/>
@@ -42,11 +42,15 @@
     <!-- ================= CONTENU ================= -->
 
     <center>
-        <VBox spacing="15" alignment="CENTER">
+        <VBox spacing="15" alignment="TOP_CENTER">
 
-            <!-- TABLE LOBBIES -->
+            <padding>
+                <Insets top="20" left="20" right="20" bottom="20"/>
+            </padding>
 
-            <TableView fx:id="lobbiesTable" prefWidth="800" prefHeight="350">
+            <!-- TABLE -->
+
+            <TableView fx:id="lobbiesTable" VBox.vgrow="ALWAYS">
 
                 <columns>
                     <TableColumn fx:id="nameColumn" text="Lobby" prefWidth="200"/>
@@ -67,7 +71,7 @@
                 </children>
             </HBox>
 
-            <!-- FALLBACK IP MANUEL -->
+            <!-- IP -->
 
             <HBox spacing="10" alignment="CENTER">
                 <children>
