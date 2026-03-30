@@ -1,5 +1,23 @@
-nbproject/private/private.properties
-nbproject/private/private.xml
-/build/
-/dist/
-nbproject/private/
+### NetBeans ###
+**/nbproject/private/
+**/nbproject/Makefile-*.mk
+**/nbproject/Package-*.bash
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+
+# Class Files #
+*.class
+
+# Ant Files #
+*.xml
+*.properties
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
