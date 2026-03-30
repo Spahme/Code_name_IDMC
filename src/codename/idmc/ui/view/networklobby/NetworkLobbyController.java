@@ -1,5 +1,6 @@
 package codename.idmc.ui.view.networklobby;
 
+import codename.idmc.app.MainApp;
 import codename.idmc.application.usecases.CreatePartieUseCase;
 import codename.idmc.app.Interfaces.Agent;
 import codename.idmc.app.Interfaces.CouleurEquipe;
@@ -42,7 +43,7 @@ public class NetworkLobbyController {
         client.setMessageListener(this::handleMessage);
 
         demanderEtatLobby();
-        envoyerParametresPartieParDefaut();
+        envoyerParametresPartieSelectionnes();
     }
 
     private void demanderEtatLobby() {
@@ -57,16 +58,16 @@ public class NetworkLobbyController {
         }
     }
 
-    private void envoyerParametresPartieParDefaut() {
+    private void envoyerParametresPartieSelectionnes() {
         try {
             client.send(new NetworkMessage(
                     MessageType.UPDATE_GAME_SETTINGS,
                     "CLIENT",
                     Map.of(
-                            "langueId", 1,
-                            "difficultyId", 3,
-                            "categorieId", 1,
-                            "equipeCommencante", "ROUGE"
+                            "langueId", MainApp.getLangueId(),
+                            "difficultyId", MainApp.getDifficultyId(),
+                            "categorieId", MainApp.getCategorieId(),
+                            "equipeCommencante", MainApp.getEquipeCommencante()
                     )
             ));
         } catch (Exception e) {
@@ -168,6 +169,7 @@ public class NetworkLobbyController {
                 }
             });
 
+            controller.setClient(client);
             controller.demarrerAffichageJeu(partie);
 
             Stage stage = (Stage) playersList.getScene().getWindow();

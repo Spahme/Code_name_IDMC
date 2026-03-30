@@ -95,11 +95,8 @@
                 <VBox alignment="CENTER" BorderPane.alignment="CENTER">
                     <children>
 
-                        <Label text="score">
-                            <font>
-                                <Font size="26.0" />
-                            </font>
-                        </Label>
+                        <Label fx:id="scoreRougeLabel" text="Rouge : 0" />
+                        <Label fx:id="scoreBleuLabel" text="Bleu : 0" />
 
                         <Label text="2/4">
                             <font>

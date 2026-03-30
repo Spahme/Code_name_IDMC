@@ -4,14 +4,21 @@ import codename.idmc.app.Interfaces.CouleurEquipe;
 
 public class LobbyPlayerRow {
 
+    private final String playerId;
+
     private String pseudo;
     private CouleurEquipe equipe;
     private String role;
 
-    public LobbyPlayerRow(String pseudo, CouleurEquipe equipe, String role) {
+    public LobbyPlayerRow(String playerId, String pseudo, CouleurEquipe equipe, String role) {
+        this.playerId = playerId;
         this.pseudo = pseudo;
         this.equipe = equipe;
         this.role = role;
+    }
+
+    public String getPlayerId() {
+        return playerId;
     }
 
     public String getPseudo() {

@@ -173,16 +173,18 @@ public class LobbyBrowserController {
     private void retourMenu() {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/codename/idmc/ui/view/menu/menu.fxml")
+                    getClass().getResource("/codename/idmc/ui/view/menu/main_menu_view.fxml")
             );
 
             Parent root = loader.load();
 
             Stage stage = (Stage) lobbiesTable.getScene().getWindow();
             stage.setScene(new Scene(root));
+            stage.setTitle("Code Name IDMC");
 
         } catch (Exception e) {
             e.printStackTrace();
+            messageLabel.setText("Erreur retour menu");
         }
     }
 }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="codename.idmc.ui.view.config.ConfigPartieController"
+            prefWidth="1000.0"
+            prefHeight="700.0"
+            style="-fx-background-color: #e0e0e0;">
+
+    <top>
+        <VBox spacing="10.0" alignment="CENTER">
+            <children>
+                <Label text="Configuration de la partie"
+                       style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+                <Label text="Sélectionne les paramètres de la partie"
+                       style="-fx-font-size: 16px;" />
+            </children>
+            <padding>
+                <Insets top="20.0" bottom="20.0" />
+            </padding>
+        </VBox>
+    </top>
+
+    <center>
+        <HBox spacing="20.0" alignment="TOP_CENTER">
+            <children>
+
+                <VBox spacing="15.0" prefWidth="420.0">
+                    <children>
+
+                        <Label text="Nom de l'hôte" />
+                        <TextField fx:id="hostField" promptText="Nom de l'hôte" />
+
+                        <Label text="Nom du lobby" />
+                        <TextField fx:id="lobbyField" promptText="Nom du lobby" />
+
+                        <Label text="Difficulté" />
+                        <ComboBox fx:id="difficultyBox"
+                                  promptText="Choisir une difficulté"
+                                  prefWidth="300.0" />
+
+                        <Label text="Établissement" />
+                        <ComboBox fx:id="establishmentBox"
+                                  promptText="Choisir un établissement"
+                                  prefWidth="300.0" />
+
+                        <Label text="Catégorie" />
+                        <ComboBox fx:id="categoryBox"
+                                  promptText="Choisir une catégorie"
+                                  prefWidth="300.0" />
+
+                        <HBox spacing="10.0">
+                            <children>
+                                <Button fx:id="launchButton"
+                                        text="Lancer la partie"
+                                        onAction="#lancerPartie" />
+                                <Button text="Réinitialiser"
+                                        onAction="#reinitialiser" />
+                                <Button text="Ajouter du contenu"
+                                        onAction="#ouvrirAdmin" />
+                            </children>
+                        </HBox>
+
+                        <Label fx:id="statusLabel"
+                               style="-fx-text-fill: red; -fx-font-size: 14px;" />
+
+                    </children>
+                    <padding>
+                        <Insets left="20.0" right="20.0" bottom="20.0" />
+                    </padding>
+                </VBox>
+
+                <VBox spacing="15.0" prefWidth="480.0">
+                    <children>
+                        <Label text="Aperçu des paramètres"
+                               style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+                        <TextArea fx:id="previewArea"
+                                  editable="false"
+                                  wrapText="true"
+                                  prefHeight="450.0" />
+                    </children>
+                    <padding>
+                        <Insets left="20.0" right="20.0" bottom="20.0" />
+                    </padding>
+                </VBox>
+
+            </children>
+        </HBox>
+    </center>
+</BorderPane>

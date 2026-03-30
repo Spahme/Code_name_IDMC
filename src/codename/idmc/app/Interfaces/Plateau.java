@@ -18,7 +18,7 @@ public class Plateau {
         if (cartesDisponibles.size() < Grille.SIZE) {
             throw new IllegalArgumentException(
                     "Pas assez de cartes : besoin de " + Grille.SIZE
-                    + ", reçu " + cartesDisponibles.size()
+                            + ", reçu " + cartesDisponibles.size()
             );
         }
 
@@ -28,26 +28,27 @@ public class Plateau {
 
         List<CouleurCarte> types = new ArrayList<>();
 
-        CouleurCarte typeCommencant = equipeCommencante == CouleurEquipe.ROUGE
+        CouleurCarte typeCommencant = (equipeCommencante == CouleurEquipe.ROUGE)
                 ? CouleurCarte.ROUGE
                 : CouleurCarte.BLEU;
 
-        CouleurCarte typeAutre = equipeCommencante == CouleurEquipe.ROUGE
+        CouleurCarte typeAutre = (equipeCommencante == CouleurEquipe.ROUGE)
                 ? CouleurCarte.BLEU
                 : CouleurCarte.ROUGE;
 
-        for (int i = 0; i < Grille.REDCARTESCOUNT; i++) {
+        for (int i = 0; i < 9; i++) {
             types.add(typeCommencant);
         }
-        for (int i = 0; i < Grille.BLUECARTESCOUNT; i++) {
+
+        for (int i = 0; i < 8; i++) {
             types.add(typeAutre);
         }
-        for (int i = 0; i < Grille.NEUTRALCARTESCOUNT; i++) {
+
+        for (int i = 0; i < 7; i++) {
             types.add(CouleurCarte.NEUTRE);
         }
-        for (int i = 0; i < Grille.ASSASSINCARTESCOUNT; i++) {
-            types.add(CouleurCarte.ASSASSIN);
-        }
+
+        types.add(CouleurCarte.ASSASSIN);
 
         Collections.shuffle(types);
 
@@ -65,20 +66,23 @@ public class Plateau {
 
     public CouleurCarte jouerCarte(String contenu) {
         Carte carte = grille.findByWord(contenu);
+
         if (carte == null) {
             System.out.println("Carte introuvable : " + contenu);
             return null;
         }
+
         if (carte.isRetournee()) {
             System.out.println("Cette carte est déjà retournée.");
             return null;
         }
+
         carte.retourner();
         return carte.getType();
     }
 
     public boolean aGagne(CouleurEquipe equipe) {
-        CouleurCarte type = equipe == CouleurEquipe.ROUGE
+        CouleurCarte type = (equipe == CouleurEquipe.ROUGE)
                 ? CouleurCarte.ROUGE
                 : CouleurCarte.BLEU;
 
