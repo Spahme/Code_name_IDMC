@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -21,8 +20,10 @@
     <top>
         <VBox spacing="10.0" alignment="CENTER">
             <children>
-                <Label text="Lobby Codenames" style="-fx-font-size: 28px; -fx-font-weight: bold;" />
-                <Label text="Choix des joueurs, équipes et rôles" style="-fx-font-size: 16px;" />
+                <Label text="Lobby Codenames"
+                       style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+                <Label text="Sélectionne ton équipe et ton rôle"
+                       style="-fx-font-size: 16px;" />
             </children>
             <padding>
                 <Insets top="20.0" bottom="20.0" />
@@ -33,32 +34,52 @@
     <center>
         <VBox spacing="20.0" alignment="TOP_CENTER">
             <children>
+
                 <HBox spacing="10.0" alignment="CENTER">
                     <children>
-                        <TextField fx:id="pseudoField" promptText="Pseudo du joueur" prefWidth="220.0" />
-                        <ComboBox fx:id="equipeCombo" prefWidth="140.0" promptText="Équipe" />
-                        <ComboBox fx:id="roleCombo" prefWidth="180.0" promptText="Rôle" />
-                        <Button text="Ajouter joueur" onAction="#ajouterJoueur" />
+                        <ComboBox fx:id="equipeCombo"
+                                  prefWidth="180.0"
+                                  promptText="Équipe" />
+
+                        <ComboBox fx:id="roleCombo"
+                                  prefWidth="220.0"
+                                  promptText="Rôle" />
+
+                        <Button text="Annuler sélection"
+                                onAction="#annulerSelection" />
                     </children>
                 </HBox>
 
-                <TableView fx:id="joueursTable" prefWidth="720.0" prefHeight="350.0">
+                <TableView fx:id="joueursTable"
+                           prefWidth="720.0"
+                           prefHeight="350.0">
                     <columns>
-                        <TableColumn fx:id="pseudoColumn" text="Pseudo" prefWidth="260.0" />
-                        <TableColumn fx:id="equipeColumn" text="Équipe" prefWidth="180.0" />
-                        <TableColumn fx:id="roleColumn" text="Rôle" prefWidth="240.0" />
+                        <TableColumn fx:id="pseudoColumn"
+                                     text="Pseudo"
+                                     prefWidth="260.0" />
+                        <TableColumn fx:id="equipeColumn"
+                                     text="Équipe"
+                                     prefWidth="180.0" />
+                        <TableColumn fx:id="roleColumn"
+                                     text="Rôle"
+                                     prefWidth="240.0" />
                     </columns>
                 </TableView>
 
                 <HBox spacing="10.0" alignment="CENTER">
                     <children>
-                        <Button text="Supprimer sélection" onAction="#supprimerJoueurSelectionne" />
-                        <Button text="Lancer la partie" onAction="#lancerPartie" />
+                        <Button text="Lancer la partie"
+                                onAction="#lancerPartie" />
                     </children>
                 </HBox>
 
-                <Label fx:id="messageLabel" style="-fx-text-fill: red; -fx-font-size: 14px;" />
+                <Label fx:id="messageLabel"
+                       style="-fx-text-fill: red; -fx-font-size: 14px;" />
             </children>
+
+            <padding>
+                <Insets left="20.0" right="20.0" bottom="20.0" />
+            </padding>
         </VBox>
     </center>
 </BorderPane>

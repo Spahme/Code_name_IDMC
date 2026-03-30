@@ -1,11 +1,5 @@
 package codename.idmc.app.Interfaces;
 
-import codename.idmc.app.Interfaces.Carte;
-import codename.idmc.app.Interfaces.CouleurCarte;
-import codename.idmc.app.Interfaces.CouleurEquipe;
-import codename.idmc.app.Interfaces.Equipe;
-import codename.idmc.app.Interfaces.Joueur;
-import codename.idmc.app.Interfaces.Plateau;
 import codename.idmc.infrastructure.persistance.Saveable;
 
 import java.util.ArrayList;
@@ -93,22 +87,16 @@ public class Partie {
             this.grille = this.plateau.getGrille();
         }
 
+        this.equipeCourante = (equipeCommencante == CouleurEquipe.ROUGE) ? equipeRouge : equipeBleu;
+        this.scoreRouge = 0;
+        this.scoreBleu = 0;
+
         System.out.println("Plateau initialisé avec " + cartesDisponibles.size() + " cartes.");
     }
 
     public void demarrerPartie() {
         if (plateau == null) {
             System.out.println("Erreur : le plateau n'est pas initialisé.");
-            return;
-        }
-
-        if (equipeRouge.getJoueurs().size() < 2 || equipeBleu.getJoueurs().size() < 2) {
-            System.out.println("Erreur : chaque équipe doit avoir au moins 2 joueurs.");
-            return;
-        }
-
-        if (!equipeAUnMaitreEspion(equipeRouge) || !equipeAUnMaitreEspion(equipeBleu)) {
-            System.out.println("Erreur : chaque équipe doit avoir exactement 1 maître espion.");
             return;
         }
 
@@ -138,11 +126,6 @@ public class Partie {
             return false;
         }
 
-        if (indiceCourant == null) {
-            System.out.println("Le maître espion doit d'abord donner un indice.");
-            return false;
-        }
-
         CouleurCarte type = plateau.jouerCarte(contenu);
         if (type == null) {
             return false;
@@ -156,20 +139,24 @@ public class Partie {
             return false;
         }
 
-        CouleurCarte typeCourant = equipeCourante.getCouleur() == CouleurEquipe.ROUGE
+        if (type == CouleurCarte.NEUTRE) {
+            System.out.println("Carte neutre retournée : fin du tour.");
+            passerTour();
+            return false;
+        }
+
+        CouleurCarte typeEquipeCourante = (equipeCourante.getCouleur() == CouleurEquipe.ROUGE)
                 ? CouleurCarte.ROUGE
                 : CouleurCarte.BLEU;
 
-        if (type == typeCourant) {
-            equipeCourante.carteRetournee();
+        CouleurCarte typeEquipeAdverse = (equipeCourante.getCouleur() == CouleurEquipe.ROUGE)
+                ? CouleurCarte.BLEU
+                : CouleurCarte.ROUGE;
 
-            if (equipeCourante.getCouleur() == CouleurEquipe.ROUGE) {
-                scoreRouge++;
-            } else {
-                scoreBleu++;
-            }
+        if (type == typeEquipeCourante) {
+            incrementerScoreEquipeCourante();
 
-            if (equipeCourante.aGagne()) {
+            if (aGagneEquipeCourante()) {
                 System.out.println(equipeCourante.getNom() + " a gagné la partie !");
                 estEnCours = false;
                 return false;
@@ -178,29 +165,56 @@ public class Partie {
             return true;
         }
 
-        Equipe equipeAdverse = equipeCourante == equipeRouge ? equipeBleu : equipeRouge;
-        CouleurCarte typeAdverse = equipeAdverse.getCouleur() == CouleurEquipe.ROUGE
-                ? CouleurCarte.ROUGE
-                : CouleurCarte.BLEU;
+        if (type == typeEquipeAdverse) {
+            incrementerScoreEquipeAdverse();
 
-        if (type == typeAdverse) {
-            equipeAdverse.carteRetournee();
-
-            if (equipeAdverse.getCouleur() == CouleurEquipe.ROUGE) {
-                scoreRouge++;
-            } else {
-                scoreBleu++;
-            }
-
-            if (equipeAdverse.aGagne()) {
-                System.out.println(equipeAdverse.getNom() + " a gagné la partie !");
+            if (aGagneEquipeAdverse()) {
+                Equipe adverse = getEquipeAdverse();
+                System.out.println(adverse.getNom() + " a gagné la partie !");
                 estEnCours = false;
                 return false;
             }
+
+            System.out.println("Carte adverse retournée : fin du tour.");
+            passerTour();
+            return false;
         }
 
-        passerTour();
         return false;
+    }
+
+    private void incrementerScoreEquipeCourante() {
+        if (equipeCourante.getCouleur() == CouleurEquipe.ROUGE) {
+            scoreRouge++;
+        } else {
+            scoreBleu++;
+        }
+    }
+
+    private void incrementerScoreEquipeAdverse() {
+        if (equipeCourante.getCouleur() == CouleurEquipe.ROUGE) {
+            scoreBleu++;
+        } else {
+            scoreRouge++;
+        }
+    }
+
+    private boolean aGagneEquipeCourante() {
+        if (equipeCourante.getCouleur() == CouleurEquipe.ROUGE) {
+            return plateau.getCartesRestantes(CouleurCarte.ROUGE) == 0;
+        }
+        return plateau.getCartesRestantes(CouleurCarte.BLEU) == 0;
+    }
+
+    private boolean aGagneEquipeAdverse() {
+        if (equipeCourante.getCouleur() == CouleurEquipe.ROUGE) {
+            return plateau.getCartesRestantes(CouleurCarte.BLEU) == 0;
+        }
+        return plateau.getCartesRestantes(CouleurCarte.ROUGE) == 0;
+    }
+
+    private Equipe getEquipeAdverse() {
+        return (equipeCourante == equipeRouge) ? equipeBleu : equipeRouge;
     }
 
     public void passerTour() {
@@ -208,16 +222,6 @@ public class Partie {
         equipeCourante = (equipeCourante == equipeRouge) ? equipeBleu : equipeRouge;
         tourActuelle++;
         System.out.println("\nC'est maintenant au tour de : " + equipeCourante.getNom());
-    }
-
-    private boolean equipeAUnMaitreEspion(Equipe equipe) {
-        int count = 0;
-        for (Joueur j : equipe.getJoueurs()) {
-            if (j.isEstMaitreEspion()) {
-                count++;
-            }
-        }
-        return count == 1;
     }
 
     public String getTempsDeJeuFormate() {
