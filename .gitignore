@@ -12,9 +12,6 @@ nbdist/
 # Class Files #
 *.class
 
-# Ant Files #
-*.xml
-*.properties
 
 # Package Files #
 *.jar
